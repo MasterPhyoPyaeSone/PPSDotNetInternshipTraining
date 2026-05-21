@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Data;
 using Microsoft.Data.SqlClient;
-using NLADotNetInternshipTraining.AdoDotNetSample;
+using PPSDotNetInternshipTraining.AdoDotNetSample;
 
 
 class Program

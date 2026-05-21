@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLADotNetInternshipTraining.AdoDotNetSample", "NLADotNetInternshipTraining.AdoDotNetSample\NLADotNetInternshipTraining.AdoDotNetSample.csproj", "{B68AE78F-E0A2-4FD3-B407-6148EBEC0779}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining.AdoDotNetSample", "PPSDotNetInternshipTraining.AdoDotNetSample\PPSDotNetInternshipTraining.AdoDotNetSample.csproj", "{B68AE78F-E0A2-4FD3-B407-6148EBEC0779}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLADotNetInternshipTraining.DapperSample", "NLADotNetInternshipTraining.DapperSample\NLADotNetInternshipTraining.DapperSample.csproj", "{7A0BC3B0-8A0A-4C85-9422-27F563E9E690}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining.DapperSample", "PPSDotNetInternshipTraining.DapperSample\PPSDotNetInternshipTraining.DapperSample.csproj", "{7A0BC3B0-8A0A-4C85-9422-27F563E9E690}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

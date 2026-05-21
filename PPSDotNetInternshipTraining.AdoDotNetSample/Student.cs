@@ -1,4 +1,4 @@
-﻿namespace NLADotNetInternshipTraining.AdoDotNetSample;
+﻿namespace PPSDotNetInternshipTraining.AdoDotNetSample;
 
 public class Student
 {

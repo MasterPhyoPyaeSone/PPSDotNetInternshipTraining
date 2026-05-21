@@ -2,16 +2,16 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace NLADotNetInternshipTraining.DapperSample;
+namespace PPSDotNetInternshipTraining.DapperSample;
 
 public class DapperSample
 {
     private readonly SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder()
     {
         DataSource = "localhost",
-        InitialCatalog = "NLADotNetInternshipTraining",
+        InitialCatalog = "PPSDotNetInternshipTraining",
         UserID = "sa",
-        Password = "Linn@81220015228",
+        Password = "pps@Password123",
         TrustServerCertificate = true
     };
     public void Read()
@@ -27,7 +27,7 @@ public class DapperSample
       ,[CreatedBy]
       ,[ModifiedDateTime]
       ,[ModifiedBy]
-  FROM [NLADotNetInternshipTraining].[dbo].[Tbl_Student] Where IsDelete = 0";
+  FROM [PPSDotNetInternshipTraining].[dbo].[Tbl_Student] Where IsDelete = 0";
 
         using IDbConnection sqlConnection = new SqlConnection(builder.ConnectionString);
         sqlConnection.Open();
@@ -51,12 +51,12 @@ public class DapperSample
       ,[CreatedBy]
       ,[ModifiedDateTime]
       ,[ModifiedBy]
-  FROM [NLADotNetInternshipTraining].[dbo].[Tbl_Student] Where StudentId = @StudentId and IsDelete = 0";
+  FROM [PPSDotNetInternshipTraining].[dbo].[Tbl_Student] Where StudentId = @StudentId and IsDelete = 0";
 
 
         using IDbConnection sqlConnection = new SqlConnection(builder.ConnectionString);
         sqlConnection.Open();
-        Student item = sqlConnection.Query<Student>(sql, new Student { StudentId = 17 }).FirstOrDefault();
+        Student item = sqlConnection.Query<Student>(sql, new Student { StudentId = 2 }).FirstOrDefault();
         if (item is null)
         {
             System.Console.WriteLine("Data not found");
@@ -93,11 +93,11 @@ public class DapperSample
 
         Student student = new Student()
         {
-            StudentNo = "S-003",
-            StudentName = "Mg Mg",
-            FatherName = "U Ba",
+            StudentNo = "STU002",
+            StudentName = "Mg Hla",
+            FatherName = "U Win",
             Address = "Yangon",
-            DateOfBirth = new DateTime(2000, 1, 1),
+            DateOfBirth = new DateTime(2000, 6, 1),
             CreatedDateTime = DateTime.Now,
             CreatedBy = "1"
         };
@@ -129,10 +129,10 @@ public class DapperSample
 
         Student student = new Student()
         {
-            StudentId = 20,
-            StudentNo = "S-016",
+            StudentId = 5,
+            StudentNo = "STU002",
             StudentName = "Aung Aung",
-            FatherName = "U Tun",
+            FatherName = "U Win",
             Address = "Mandalay",
             DateOfBirth = new DateTime(2001, 2, 2),
             ModifiedDateTime = DateTime.Now,
@@ -162,7 +162,7 @@ public class DapperSample
 
         var student = new
         {
-            StudentId = 16,
+            StudentId = 5,
             ModifiedDateTime = DateTime.Now,
             ModifiedBy = "1"
         };

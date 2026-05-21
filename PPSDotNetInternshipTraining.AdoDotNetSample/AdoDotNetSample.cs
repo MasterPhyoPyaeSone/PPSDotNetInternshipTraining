@@ -1,16 +1,16 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace NLADotNetInternshipTraining.AdoDotNetSample;
+namespace PPSDotNetInternshipTraining.AdoDotNetSample;
 
 public class AdoDotNetSample
 {
     private readonly SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder()
     {
         DataSource = "localhost",
-        InitialCatalog = "NLADotNetInternshipTraining",
+        InitialCatalog = "PPSDotNetInternshipTraining",
         UserID = "sa",
-        Password = "Linn@81220015228",
+        Password = "pps@Password123",
         TrustServerCertificate = true
     };
 
@@ -31,7 +31,7 @@ public class AdoDotNetSample
       ,[CreatedBy]
       ,[ModifiedDateTime]
       ,[ModifiedBy]
-  FROM [NLADotNetInternshipTraining].[dbo].[Tbl_Student] Where IsDelete = 0";
+  FROM [PPSDotNetInternshipTraining].[dbo].[Tbl_Student] Where IsDelete = 0";
 
         SqlCommand command = new SqlCommand(sql, connection);
         SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -76,12 +76,12 @@ public class AdoDotNetSample
       ,[CreatedBy]
       ,[ModifiedDateTime]
       ,[ModifiedBy]
-  FROM [NLADotNetInternshipTraining].[dbo].[Tbl_Student] Where StudentId = @StudentId and IsDelete = 0";
+  FROM [PPSDotNetInternshipTraining].[dbo].[Tbl_Student] Where StudentId = @StudentId and IsDelete = 0";
 
         SqlConnection connection = new SqlConnection(builder.ConnectionString);
 
         connection.Open();
-        int id = 17;
+        int id = 4;
 
 
         SqlCommand command = new SqlCommand(sql, connection);
@@ -121,11 +121,11 @@ public class AdoDotNetSample
     {
         Student student = new Student()
         {
-            StudentNo = "S-002",
-            StudentName = "Kyaw Kyaw",
-            FatherName = "U Mya",
+            StudentNo = "STU002",
+            StudentName = "Kyaw Ba",
+            FatherName = "U Ba",
             Address = "Yangon",
-            DateOfBirth = new DateTime(2002, 5, 10),
+            DateOfBirth = new DateTime(2001, 5, 10),
             IsDelete = false,
             CreatedDateTime = DateTime.Now,
             CreatedBy = "Admin"
@@ -176,12 +176,12 @@ public class AdoDotNetSample
     {
         Student student = new Student()
         {
-            StudentId = 17,
-            StudentNo = "S-001",
-            StudentName = "Aung Aung",
-            FatherName = "U Tun",
+            StudentId = 2,
+            StudentNo = "STU002",
+            StudentName = "Aung Min",
+            FatherName = "U Lwin",
             Address = "Mandalay",
-            DateOfBirth = new DateTime(2001, 2, 2),
+            DateOfBirth = new DateTime(2000, 5, 2),
             IsDelete = false,
             ModifiedBy = "Admin"
         };
@@ -198,7 +198,8 @@ public class AdoDotNetSample
                       ,[IsDelete] = @IsDelete
                       ,[ModifiedDateTime] = @ModifiedDateTime
                       ,[ModifiedBy] = @ModifiedBy
-                 WHERE StudentId = @StudentId";
+                 WHERE StudentNo = @StudentNo";
+
 
         SqlCommand command = new SqlCommand(sql, connection);
 
@@ -225,7 +226,7 @@ public class AdoDotNetSample
     {
         using SqlConnection connection = new SqlConnection(builder.ConnectionString);
         connection.Open();
-        int id = 30;
+        int id = 4;
         // Soft delete: We just flip the IsDelete flag to true
         string sql = @"UPDATE [dbo].[Tbl_Student] 
                    SET [IsDelete] = @IsDelete, 

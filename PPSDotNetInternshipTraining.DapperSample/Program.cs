@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using NLADotNetInternshipTraining.DapperSample;
+using PPSDotNetInternshipTraining.DapperSample;
 
 class Program
 {

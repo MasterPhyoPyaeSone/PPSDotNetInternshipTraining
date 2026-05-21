@@ -1,4 +1,4 @@
-﻿namespace NLADotNetInternshipTraining.DapperSample;
+﻿namespace PPSDotNetInternshipTraining.DapperSample;
 
 public class Student
 {
