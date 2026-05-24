@@ -1,0 +1,6 @@
+@PPSDotNetInternshipTraining.WebApi_HostAddress = http://localhost:5107
+
+GET {{PPSDotNetInternshipTraining.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
