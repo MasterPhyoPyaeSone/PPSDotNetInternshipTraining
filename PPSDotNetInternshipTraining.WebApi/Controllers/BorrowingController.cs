@@ -110,6 +110,7 @@ public class BorrowingController : ControllerBase
     [HttpPatch("{id}")]
     public IActionResult PatchBorrowing(int id, BorrowingPatchRequestModel request)
     {
+        var book = _db.Books.FirstOrDefault(b => b.BookId == id && b.IsDeleted == false);
         var borrowingFromDb = _db.Borrowings.FirstOrDefault(b => b.BorrowingId == id && b.IsDeleted == false);
 
         if (borrowingFromDb is null)
@@ -117,6 +118,7 @@ public class BorrowingController : ControllerBase
             return NotFound(new ApiResponseModel { IsSuccess = false, Message = "Borrowing record not found." });
         }
         borrowingFromDb.ReturnDate = request.ReturnDate;
+        book.Status = BookStatus.Available;
         var result = _db.SaveChanges();
         return Ok(new ApiResponseModel
         {

@@ -7,7 +7,7 @@ public class BorrowingRequestModel
 {
     public DateTime BorrowDate { get; set; }
     public DateTime DueDate { get; set; }
-    public DateTime? ReturnDate { get; set; }
+    // public DateTime? ReturnDate { get; set; }
     public int BookId { get; set; }
     public int MemberId { get; set; }
 }
