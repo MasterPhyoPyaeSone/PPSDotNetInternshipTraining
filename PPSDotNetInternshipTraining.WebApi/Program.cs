@@ -6,7 +6,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(options =>
 {
-
     options.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
 });
 

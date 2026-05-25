@@ -138,12 +138,32 @@ public class BookController : ControllerBase
 
         if (requestModel.AuthorId.HasValue)
         {
+            bool isAuthorExist = _db.Authors.Any(a => a.AuthorId == requestModel.AuthorId.Value && a.IsDeleted == false);
+            if (!isAuthorExist)
+            {
+                return BadRequest(new BookUpdateResponseModel
+                {
+                    IsSuccess = false,
+                    Message = "The provided AuthorId does not exist."
+                });
+            }
+
             count++;
             item.AuthorId = requestModel.AuthorId.Value;
         }
 
         if (requestModel.CategoryId.HasValue)
         {
+            bool isCategoryExist = _db.Categories.Any(c => c.CategoryId == requestModel.CategoryId.Value && c.IsDeleted == false);
+            if (!isCategoryExist)
+            {
+                return BadRequest(new BookUpdateResponseModel
+                {
+                    IsSuccess = false,
+                    Message = "The provided CategoryId does not exist."
+                });
+            }
+
             count++;
             item.CategoryId = requestModel.CategoryId.Value;
         }
