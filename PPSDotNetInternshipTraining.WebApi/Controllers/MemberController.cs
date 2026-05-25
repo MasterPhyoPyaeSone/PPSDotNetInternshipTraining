@@ -75,6 +75,51 @@ public class MemberController : ControllerBase
             : BadRequest(new ApiResponseModel { IsSuccess = false, Message = "Failed to create member." });
     }
 
+    [HttpPatch("{id}")]
+    public IActionResult PatchMember (int id, MemberPatchModel request)
+    {
+        var memberFromDb = _db.Members.FirstOrDefault(m => m.MemberId == id && m.IsDeleted == false);
+
+        if (memberFromDb is null)
+        {
+            return NotFound(new ApiResponseModel { IsSuccess = false, Message = "Member not found." });
+        }
+
+        int count = 0;
+
+        if (!string.IsNullOrEmpty(request.FullName))
+        {
+            count++;
+            memberFromDb.FullName = request.FullName;
+        }
+
+        if (!string.IsNullOrEmpty(request.Email))
+        {
+            count++;
+            memberFromDb.Email = request.Email;
+        }
+
+        if (!string.IsNullOrEmpty(request.PhoneNumber))
+        {
+            count++;
+            memberFromDb.PhoneNumber = request.PhoneNumber;
+        }
+
+        // if (request.JoinDate.HasValue && request.JoinDate.Value > DateTime.MinValue)
+        // {
+        //     count++;
+        //     memberFromDb.JoinDate = request.JoinDate.Value;
+        // }
+
+        var result = _db.SaveChanges();
+
+        return Ok(new ApiResponseModel
+        {
+            IsSuccess = result > 0,
+            Message = result > 0 ? $"{count} field(s) updated successfully." : "No changes were made."
+        });
+    }
+
     [HttpPut("{id}")]
     public IActionResult UpdateMember(int id, MemberRequestModel request)
     {

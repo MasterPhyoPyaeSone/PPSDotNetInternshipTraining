@@ -102,7 +102,7 @@ public class BookController : ControllerBase
         });
     }
 
-    [HttpPatch("{id}")]
+   [HttpPatch("{id}")]
     public IActionResult PatchBook(int id, BookPatchRequestModel requestModel)
     {
         var item = _db.Books.FirstOrDefault(x => x.BookId == id && x.IsDeleted == false);
@@ -130,13 +130,13 @@ public class BookController : ControllerBase
             item.Isbn = requestModel.ISBN;
         }
 
-        if (requestModel.PublishedYear.HasValue)
+        if (requestModel.PublishedYear.HasValue && requestModel.PublishedYear.Value > 0)
         {
             count++;
             item.PublishedYear = requestModel.PublishedYear.Value;
         }
 
-        if (requestModel.AuthorId.HasValue)
+        if (requestModel.AuthorId.HasValue && requestModel.AuthorId.Value > 0)
         {
             bool isAuthorExist = _db.Authors.Any(a => a.AuthorId == requestModel.AuthorId.Value && a.IsDeleted == false);
             if (!isAuthorExist)
@@ -144,7 +144,7 @@ public class BookController : ControllerBase
                 return BadRequest(new BookUpdateResponseModel
                 {
                     IsSuccess = false,
-                    Message = "The provided AuthorId does not exist."
+                    Message = "The provided AuthorId does not exist in the database."
                 });
             }
 
@@ -152,7 +152,7 @@ public class BookController : ControllerBase
             item.AuthorId = requestModel.AuthorId.Value;
         }
 
-        if (requestModel.CategoryId.HasValue)
+        if (requestModel.CategoryId.HasValue && requestModel.CategoryId.Value > 0)
         {
             bool isCategoryExist = _db.Categories.Any(c => c.CategoryId == requestModel.CategoryId.Value && c.IsDeleted == false);
             if (!isCategoryExist)
@@ -160,7 +160,7 @@ public class BookController : ControllerBase
                 return BadRequest(new BookUpdateResponseModel
                 {
                     IsSuccess = false,
-                    Message = "The provided CategoryId does not exist."
+                    Message = "The provided CategoryId does not exist in the database."
                 });
             }
 
@@ -168,7 +168,7 @@ public class BookController : ControllerBase
             item.CategoryId = requestModel.CategoryId.Value;
         }
 
-        if (requestModel.Status.HasValue)
+        if (requestModel.Status.HasValue) 
         {
             count++;
             item.Status = requestModel.Status.Value;

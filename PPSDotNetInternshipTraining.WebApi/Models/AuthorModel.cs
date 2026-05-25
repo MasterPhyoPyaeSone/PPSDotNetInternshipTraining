@@ -19,3 +19,9 @@ public class ApiResponseModel
     public string Message { get; set; } = string.Empty;
     // public object? Data { get; set; }
 }
+
+public class AuthorPatchModel
+{
+    public string? Name { get; set; }
+    public string? Bio { get; set; }
+}

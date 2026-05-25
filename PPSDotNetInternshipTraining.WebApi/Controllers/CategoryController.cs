@@ -96,7 +96,12 @@ public class CategoryController : ControllerBase
         {
             return NotFound(new ApiResponseModel { IsSuccess = false, Message = "Category not found." });
         }
-
+        bool isCategoryUsed = _db.Books.Any(b => b.CategoryId == id && b.IsDeleted == false);
+        if (isCategoryUsed)
+        {
+            return BadRequest(new ApiResponseModel { IsSuccess = false, Message = "Cannot delete category because it is associated with existing books." });
+        }
+        
         categoryFromDb.IsDeleted = true;
 
         var result = _db.SaveChanges();

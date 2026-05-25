@@ -8,7 +8,7 @@ namespace PPSDotNetInternshipTraining.WebApi.Controllers;
 [ApiController]
 public class AuthorController : ControllerBase
 {
-     private readonly AppDbContext _db;
+    private readonly AppDbContext _db;
     public AuthorController()
     {
         _db = new AppDbContext();
@@ -25,7 +25,7 @@ public class AuthorController : ControllerBase
                 Name = a.Name,
                 Bio = a.Bio
             })
-            .ToList(); 
+            .ToList();
 
         return Ok(authors);
     }
@@ -41,7 +41,7 @@ public class AuthorController : ControllerBase
                 Name = a.Name,
                 Bio = a.Bio
             })
-            .FirstOrDefault(); 
+            .FirstOrDefault();
 
         if (author is null)
         {
@@ -61,14 +61,43 @@ public class AuthorController : ControllerBase
         };
 
         _db.Authors.Add(newAuthor);
-        
-        var result = _db.SaveChanges(); 
 
-        return result > 0 
+        var result = _db.SaveChanges();
+
+        return result > 0
             ? Ok(new ApiResponseModel { IsSuccess = true, Message = "Author created successfully." })
             : BadRequest(new ApiResponseModel { IsSuccess = false, Message = "Failed to create author." });
     }
-
+    [HttpPatch("{id}")]
+    public IActionResult PatchAuthor(int id, AuthorPatchModel request)
+    {
+        var authorFromDb = _db.Authors.FirstOrDefault(a => a.AuthorId == id && a.IsDeleted == false);
+        if (authorFromDb is null)
+        {
+            return NotFound(new ApiResponseModel
+            {
+                IsSuccess = false,
+                Message = "Author not found."
+            });
+        }
+        int count = 0;
+        if (!string.IsNullOrEmpty(request.Name))
+        {
+            count++;
+            authorFromDb.Name = request.Name;
+        }
+        if (!string.IsNullOrEmpty(request.Bio))
+        {
+            count++;
+            authorFromDb.Bio = request.Bio;
+        }
+        _db.SaveChanges();
+        return Ok(new ApiResponseModel
+        {
+            IsSuccess = count > 0 ? true : false,
+            Message = count > 0 ? "Author updated successfully." : "No changes were made."
+        });
+    }
     [HttpPut("{id}")]
     public IActionResult UpdateAuthor(int id, AuthorRequestModel request)
     {
@@ -107,6 +136,15 @@ public class AuthorController : ControllerBase
             return NotFound(new ApiResponseModel { IsSuccess = false, Message = "Author not found." });
         }
 
+        bool hasBooks = _db.Books.Any(b => b.AuthorId == id && b.IsDeleted == false);
+        if (hasBooks)
+        {
+            return BadRequest(new ApiResponseModel
+            {
+                IsSuccess = false,
+                Message = "Cannot delete author with existing books."
+            });
+        }
         authorFromDb.IsDeleted = true;
 
         var result = _db.SaveChanges();
@@ -117,4 +155,6 @@ public class AuthorController : ControllerBase
             Message = result > 0 ? "Author deleted successfully." : "Failed to delete author."
         });
     }
+
+
 }
