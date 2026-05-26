@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PPSDotNetInternshipTraining.WebApi.Database.AppDbContextModels;
 using PPSDotNetInternshipTraining.WebApi.Models;
 using static PPSDotNetInternshipTraining.WebApi.Database.AppDbContextModels.Book;
+using static PPSDotNetInternshipTraining.WebApi.Models.BookCreateRequestModel;
 
 namespace PPSDotNetInternshipTraining.WebApi.Controllers;
 
@@ -81,7 +82,7 @@ public class BorrowingController : ControllerBase
             });
         }
         
-        if (book.Status != BookStatus.Available) 
+        if (book.Status != (int)BookStatus.Available || book.Status != (int)BookStatus.Damaged || book.Status != (int)BookStatus.Lost) 
         {
             return BadRequest(new ApiResponseModel
             {
@@ -99,7 +100,7 @@ public class BorrowingController : ControllerBase
         };
 
         _db.Borrowings.Add(newBorrowing);
-        book.Status = BookStatus.Borrowed;
+        book.Status = (int)BookStatus.Borrowed;
         var result = _db.SaveChanges();
 
         return result > 0 
@@ -118,7 +119,7 @@ public class BorrowingController : ControllerBase
             return NotFound(new ApiResponseModel { IsSuccess = false, Message = "Borrowing record not found." });
         }
         borrowingFromDb.ReturnDate = request.ReturnDate;
-        book.Status = BookStatus.Available;
+        book.Status = (int)BookStatus.Available;
         var result = _db.SaveChanges();
         return Ok(new ApiResponseModel
         {

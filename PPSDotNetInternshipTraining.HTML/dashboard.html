@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Library Admin Dashboard</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22 fill=%22%234f46e5%22><path d=%22M256 0l256 128-256 128L0 128 256 0zm0 338.5L24.3 219.8l-24.3 12.1L256 360l256-128-24.3-12.1L256 338.5zm0 109.5L24.3 329.8l-24.3 12.1L256 470l256-128-24.3-12.1L256 448z%22/></svg>" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* === Modern UI Custom Styles === */
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f4f7fe;
+        color: #2b3674;
+        overflow-x: hidden;
+      }
+
+      /* Modern Sidebar */
+      .sidebar {
+        height: 100vh;
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        padding: 30px 15px;
+        width: 260px;
+        border-radius: 0 20px 20px 0;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+      }
+      .sidebar-brand h4 {
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+      .sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.7);
+        padding: 12px 20px;
+        font-size: 15px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+      }
+      .sidebar .nav-link:hover,
+      .sidebar .nav-link.active {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        transform: translateX(5px);
+        backdrop-filter: blur(5px);
+      }
+
+      .main-content {
+        margin-left: 260px;
+        padding: 40px 50px;
+        min-height: 100vh;
+      }
+
+      .card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+        transition: 0.3s ease;
+      }
+
+      /* Gradient Dashboard Cards */
+      .dashboard-card {
+        color: white;
+        padding: 25px 20px;
+      }
+      .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .dashboard-card h5 {
+        font-weight: 400;
+        font-size: 15px;
+        opacity: 0.9;
+      }
+      .dashboard-card h2 {
+        font-weight: 600;
+        font-size: 36px;
+        margin-top: 10px;
+      }
+      .bg-grad-primary {
+        background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+      }
+      .bg-grad-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      }
+      .bg-grad-warning {
+        background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+        color: #fff !important;
+      }
+      .bg-grad-danger {
+        background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+      }
+
+      /* Tables */
+      .table {
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+      }
+      .table thead th {
+        background: #2b3674;
+        color: white;
+        border: none;
+        padding: 15px;
+        font-weight: 500;
+      }
+      .table tbody td {
+        vertical-align: middle;
+        padding: 12px 15px;
+        border-bottom: 1px solid #eef2f7;
+      }
+      .form-control,
+      .form-select {
+        border-radius: 10px;
+        padding: 10px 15px;
+        border: 1px solid #e0e5f2;
+      }
+      .form-control:focus,
+      .form-select:focus {
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        border-color: #4f46e5;
+      }
+
+      /* === New Button Designs === */
+      .btn {
+        border-radius: 12px;
+        padding: 8px 22px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .btn:active {
+        transform: scale(0.95);
+      }
+      .btn-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border: none;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      }
+      .btn-success:hover {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+      }
+      .btn-light.border {
+        background: #ffffff;
+        border-color: #e2e8f0 !important;
+        color: #475569;
+      }
+      .btn-light.border:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1 !important;
+        color: #1e293b;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+        border: none;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+      }
+
+      /* Table Row Action Buttons (Edit/Delete/Return) */
+      .btn-action {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 10px;
+        border: none;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+      .btn-action-edit {
+        background-color: #eff6ff;
+        color: #3b82f6;
+      }
+      .btn-action-edit:hover {
+        background-color: #3b82f6;
+        color: white;
+        transform: translateY(-2px);
+      }
+      .btn-action-delete {
+        background-color: #fef2f2;
+        color: #ef4444;
+      }
+      .btn-action-delete:hover {
+        background-color: #ef4444;
+        color: white;
+        transform: translateY(-2px);
+      }
+      .btn-action-return {
+        width: auto;
+        padding: 6px 14px;
+        background-color: #f0fdf4;
+        color: #16a34a;
+        font-weight: 500;
+        font-size: 13px;
+      }
+      .btn-action-return:hover {
+        background-color: #16a34a;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .tab-content-panel {
+        display: none;
+        animation: fadeInUp 0.4s ease-out;
+      }
+      .tab-content-panel.active-panel {
+        display: block;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div class="px-3 mb-5 text-center sidebar-brand">
+        <h4 class="mb-1">
+          <i class="fa-solid fa-layer-group text-light me-2"></i>LibAdmin
+        </h4>
+        <small style="color: rgba(255, 255, 255, 0.6)">Management System</small>
+      </div>
+
+      <div class="nav flex-column nav-pills">
+        <a class="nav-link active" href="#" data-target="panel-overview"
+          ><i class="fa-solid fa-border-all me-3"></i> Dashboard</a
+        >
+        <a
+          class="nav-link"
+          href="#"
+          data-target="panel-borrowings"
+          onclick="bindBorrowingDropdowns();"
+          ><i class="fa-solid fa-handshake me-3"></i> Borrowings</a
+        >
+        <a
+          class="nav-link"
+          href="#"
+          data-target="panel-books"
+          onclick="bindBookDropdowns();"
+          ><i class="fa-solid fa-book-open me-3"></i> Books</a
+        >
+        <a class="nav-link" href="#" data-target="panel-members"
+          ><i class="fa-solid fa-user-group me-3"></i> Members</a
+        >
+        <a class="nav-link" href="#" data-target="panel-authors"
+          ><i class="fa-solid fa-pen-nib me-3"></i> Authors</a
+        >
+        <a class="nav-link" href="#" data-target="panel-categories"
+          ><i class="fa-solid fa-tags me-3"></i> Categories</a
+        >
+        <a
+          class="nav-link"
+          href="#"
+          data-target="panel-fines"
+          onclick="bindFineDropdowns();"
+          ><i class="fa-solid fa-money-bill-wave me-3"></i> Fines</a
+        >
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div id="panel-overview" class="tab-content-panel active-panel">
+        <h3 class="mb-4 fw-bold">Dashboard Overview</h3>
+        <div class="row">
+          <div class="col-md-3 mb-4">
+            <div class="card dashboard-card bg-grad-primary shadow-sm">
+              <h5><i class="fa-solid fa-users me-2"></i> Total Members</h5>
+              <h2 id="lblCountMembers">0</h2>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="card dashboard-card bg-grad-success shadow-sm">
+              <h5><i class="fa-solid fa-book me-2"></i> Total Books</h5>
+              <h2 id="lblCountBooks">0</h2>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="card dashboard-card bg-grad-warning shadow-sm">
+              <h5>
+                <i class="fa-solid fa-clock-rotate-left me-2"></i> Pending
+                Borrows
+              </h5>
+              <h2 id="lblCountPending">0</h2>
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="card dashboard-card bg-grad-danger shadow-sm">
+              <h5>
+                <i class="fa-solid fa-triangle-exclamation me-2"></i> Overdue
+                Books
+              </h5>
+              <h2 id="lblCountOverdue">0</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-2 p-4 shadow-sm border-0">
+          <h5 class="fw-bold text-primary">
+            <i class="fa-solid fa-bolt me-2"></i> System Ready
+          </h5>
+          <p class="text-muted mb-0 mt-2">
+            Welcome back! Use the sidebar navigation to manage books, authors,
+            members, and transactions. The interface has been upgraded for a
+            seamless experience.
+          </p>
+        </div>
+      </div>
+
+      <div id="panel-borrowings" class="tab-content-panel">
+        <h3 class="mb-4 fw-bold">Active Borrowings</h3>
+        <div class="card p-4 mb-4 shadow-sm border-0">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Select Member</label
+              >
+              <select class="form-select" id="ddlB_Member">
+                <option value="">-- Choose --</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Select Book</label
+              >
+              <select class="form-select" id="ddlB_Book">
+                <option value="">-- Choose --</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Borrow Date</label
+              >
+              <input type="date" class="form-control" id="txtB_BorrowDate" />
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold">Due Date</label>
+              <input type="date" class="form-control" id="txtB_DueDate" />
+            </div>
+          </div>
+          <div class="text-end mt-2">
+            <button
+              class="btn btn-light border me-2"
+              onclick="clearBorrowInputs()"
+            >
+              Clear
+            </button>
+            <button class="btn btn-primary px-4" onclick="saveBorrowing()">
+              <i class="fa-solid fa-plus"></i> Issue Book
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive shadow-sm" style="border-radius: 12px">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Member</th>
+                <th>Book</th>
+                <th>B Date</th>
+                <th>Due Date</th>
+                <th>R Date</th>
+                <th>Status</th>
+                <th class="text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tblBorrowings"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="panel-books" class="tab-content-panel">
+        <h3 class="mb-4 fw-bold">Library Catalog</h3>
+        <div class="card p-4 mb-4 shadow-sm border-0">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted fw-semibold">Book Title</label
+              ><input type="text" class="form-control" id="txtBookTitle" />
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted fw-semibold">ISBN</label
+              ><input type="text" class="form-control" id="txtBookIsbn" />
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Published Year</label
+              ><input type="number" class="form-control" id="txtBookYear" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted fw-semibold">Author</label
+              ><select class="form-select" id="ddlBookAuthor"></select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted fw-semibold">Category</label
+              ><select class="form-select" id="ddlBookCategory"></select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label text-muted fw-semibold">Status</label>
+              <select class="form-select" id="ddlBookStatus">
+                <option value="1">Available</option>
+                <option value="2">Borrowed</option>
+                <option value="3">Lost</option>
+              </select>
+            </div>
+          </div>
+          <div class="text-end mt-2">
+            <button
+              class="btn btn-light border me-2"
+              onclick="clearBookInputs()"
+            >
+              Clear
+            </button>
+            <button
+              class="btn btn-success px-4"
+              id="btnSaveBook"
+              onclick="saveBook()"
+            >
+              <i class="fa-solid fa-floppy-disk"></i> Save Book
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive shadow-sm" style="border-radius: 12px">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Year</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tblBooks"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="panel-members" class="tab-content-panel">
+        <h3 class="mb-4 fw-bold">Members Directory</h3>
+        <div class="card p-4 mb-4 shadow-sm border-0">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold">Full Name</label
+              ><input type="text" class="form-control" id="txtMemName" />
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Email Address</label
+              ><input type="email" class="form-control" id="txtMemEmail" />
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Phone Number</label
+              ><input type="text" class="form-control" id="txtMemPhone" />
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold">Join Date</label
+              ><input type="date" class="form-control" id="txtMemJoin" />
+            </div>
+          </div>
+          <div class="text-end mt-2">
+            <button
+              class="btn btn-light border me-2"
+              onclick="clearMemberInputs()"
+            >
+              Clear
+            </button>
+            <button
+              class="btn btn-success px-4"
+              id="btnSaveMember"
+              onclick="saveMember()"
+            >
+              <i class="fa-solid fa-floppy-disk"></i> Save Member
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive shadow-sm" style="border-radius: 12px">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Join Date</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tblMembers"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="panel-authors" class="tab-content-panel">
+        <h3 class="mb-4 fw-bold">Authors Registry</h3>
+        <div class="card p-4 mb-4 shadow-sm border-0">
+          <div class="mb-3">
+            <label class="form-label text-muted fw-semibold">Author Name</label
+            ><input type="text" class="form-control" id="txtAuthName" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label text-muted fw-semibold"
+              >Biography (Bio)</label
+            ><textarea class="form-control" id="txtAuthBio" rows="3"></textarea>
+          </div>
+          <div class="text-end mt-2">
+            <button
+              class="btn btn-light border me-2"
+              onclick="clearAuthorInputs()"
+            >
+              Clear
+            </button>
+            <button
+              class="btn btn-success px-4"
+              id="btnSaveAuthor"
+              onclick="saveAuthor()"
+            >
+              <i class="fa-solid fa-floppy-disk"></i> Save Author
+            </button>
+          </div>
+        </div>
+        <div class="table-responsive shadow-sm" style="border-radius: 12px">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th width="5%">No.</th>
+                <th width="30%">Name</th>
+                <th width="50%">Biography</th>
+                <th width="15%" class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tblAuthors"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="panel-categories" class="tab-content-panel">
+        <h3 class="mb-4 fw-bold">Manage Categories</h3>
+        <div class="card p-4 mb-4 shadow-sm border-0">
+          <div class="row align-items-end">
+            <div class="col-md-8 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Category Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="txtCatName"
+                placeholder="e.g., Science Fiction"
+              />
+            </div>
+            <div class="col-md-4 mb-3 text-end">
+              <button
+                class="btn btn-light border me-2"
+                onclick="clearCategoryInputs()"
+              >
+                Clear
+              </button>
+              <button
+                class="btn btn-success px-4"
+                id="btnSaveCategory"
+                onclick="saveCategory()"
+              >
+                <i class="fa-solid fa-floppy-disk"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive shadow-sm" style="border-radius: 12px">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th width="10%">No.</th>
+                <th>Category Name</th>
+                <th width="20%" class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tblCategories"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="panel-fines" class="tab-content-panel">
+        <h3 class="mb-4 fw-bold">Manage Fines</h3>
+        <div class="card p-4 mb-4 shadow-sm border-0">
+          <div class="row align-items-end">
+            <div class="col-md-5 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Borrowing Record</label
+              >
+              <select class="form-select" id="ddlF_Borrowing">
+                <option value="">-- Choose Borrowing --</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label text-muted fw-semibold"
+                >Fine Amount ($)</label
+              >
+              <input
+                type="number"
+                step="0.01"
+                class="form-control"
+                id="txtF_Amount"
+                placeholder="e.g., 5.00"
+              />
+            </div>
+            <div class="col-md-2 mb-3 pb-2">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="chkF_IsPaid"
+                />
+                <label
+                  class="form-check-label text-muted fw-semibold"
+                  for="chkF_IsPaid"
+                  >Is Paid?</label
+                >
+              </div>
+            </div>
+            <div class="col-md-2 mb-3 text-end">
+              <button
+                class="btn btn-light border me-2"
+                onclick="clearFineInputs()"
+              >
+                Clear
+              </button>
+              <button
+                class="btn btn-success"
+                id="btnSaveFine"
+                onclick="saveFine()"
+              >
+                <i class="fa-solid fa-floppy-disk me-1"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive shadow-sm" style="border-radius: 12px">
+          <table class="table mb-0">
+            <thead>
+              <tr>
+                <th width="5%">No.</th>
+                <th>Member</th>
+                <th>Book</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th width="15%" class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tblFines"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      let editBookId = null;
+      let editMemberId = null;
+      let editAuthorId = null;
+      let editCategoryId = null;
+
+      $(document).ready(function () {
+        $(".sidebar .nav-link").click(function (e) {
+          e.preventDefault();
+          $(".sidebar .nav-link").removeClass("active");
+          $(this).addClass("active");
+
+          let targetPanel = $(this).attr("data-target");
+          $(".tab-content-panel").removeClass("active-panel");
+          $("#" + targetPanel).addClass("active-panel");
+
+          calculateOverview();
+        });
+
+        calculateOverview();
+        loadBorrowings();
+        loadBooks();
+        loadMembers();
+        loadAuthors();
+        loadCategories();
+        loadFines();
+        $("#txtB_BorrowDate").val(new Date().toISOString().split("T")[0]);
+      });
+      
+      function calculateOverview() {
+        let mems = JSON.parse(localStorage.getItem("members")) || [];
+        let books = JSON.parse(localStorage.getItem("books")) || [];
+        let borrows = JSON.parse(localStorage.getItem("borrowings")) || [];
+        let fines = JSON.parse(localStorage.getItem("fines")) || []; // Fines Data ကိုပါ လှမ်းယူမည်
+
+        $("#lblCountMembers").text(mems.filter((m) => !m.isDeleted).length);
+        $("#lblCountBooks").text(
+          books.filter((b) => !b.isDeleted && b.status !== 3).length
+        );
+        let activeBorrows = borrows.filter(
+          (b) => !b.isDeleted && !b.returnDate
+        );
+        $("#lblCountPending").text(activeBorrows.length);
+
+        let today = new Date().toISOString().split("T")[0];
+        let overdueCount = 0;
+
+        borrows
+          .filter((b) => !b.isDeleted)
+          .forEach((b) => {
+            let fine = fines.find(
+              (f) => f.borrowingId === b.id && !f.isDeleted
+            );
+
+            let isOverdueNotReturned =
+              !b.returnDate && new Date(b.dueDate) < new Date(today);
+            let isReturnedLate =
+              b.returnDate && new Date(b.dueDate) < new Date(b.returnDate);
+
+            if (isOverdueNotReturned) {
+              overdueCount++;
+            } else if (isReturnedLate) {
+              if (!fine || (fine && !fine.isPaid)) {
+                overdueCount++;
+              }
+            } else if (fine && !fine.isPaid) {
+              overdueCount++;
+            }
+          });
+
+        $("#lblCountOverdue").text(overdueCount);
+      }
+
+      function bindBorrowingDropdowns() {
+        let members = JSON.parse(localStorage.getItem("members")) || [];
+        $("#ddlB_Member").html('<option value="">-- Choose --</option>');
+        members
+          .filter((m) => !m.isDeleted)
+          .forEach((m) =>
+            $("#ddlB_Member").append(
+              `<option value="${m.id}">${m.fullName}</option>`
+            )
+          );
+        let books = JSON.parse(localStorage.getItem("books")) || [];
+        $("#ddlB_Book").html('<option value="">-- Choose --</option>');
+        books
+          .filter((b) => !b.isDeleted && b.status === 1)
+          .forEach((b) =>
+            $("#ddlB_Book").append(
+              `<option value="${b.id}">${b.title}</option>`
+            )
+          );
+      }
+
+      function saveBorrowing() {
+        let memId = $("#ddlB_Member").val();
+        let bkId = $("#ddlB_Book").val();
+        let bDate = $("#txtB_BorrowDate").val();
+        let dDate = $("#txtB_DueDate").val();
+        if (!memId || !bkId || !bDate || !dDate) {
+          alert("Fill all fields");
+          return;
+        }
+        let borrows = JSON.parse(localStorage.getItem("borrowings")) || [];
+        borrows.push({
+          id: crypto.randomUUID(),
+          memberId: memId,
+          bookId: bkId,
+          borrowDate: bDate,
+          dueDate: dDate,
+          returnDate: null,
+          isDeleted: false,
+        });
+        localStorage.setItem("borrowings", JSON.stringify(borrows));
+        updateBookStatus(bkId, 2);
+        clearBorrowInputs();
+        bindBorrowingDropdowns();
+        loadBorrowings();
+      }
+
+      function loadBorrowings() {
+        let borrows = JSON.parse(localStorage.getItem("borrowings")) || [];
+        let mems = JSON.parse(localStorage.getItem("members")) || [];
+        let bks = JSON.parse(localStorage.getItem("books")) || [];
+        $("#tblBorrowings").html("");
+        borrows
+          .filter((b) => !b.isDeleted)
+          .forEach((b, i) => {
+            let mObj = mems.find((m) => m.id === b.memberId);
+            let bObj = bks.find((bk) => bk.id === b.bookId);
+            let statusBadge = b.returnDate
+              ? '<span class="badge bg-success">Returned</span>'
+              : new Date(b.dueDate) < new Date()
+              ? '<span class="badge bg-danger">Overdue</span>'
+              : '<span class="badge bg-warning text-dark">Pending</span>';
+
+            // New Action Button Styles
+            let actBtn = b.returnDate
+              ? '<span class="text-success fw-bold"><i class="fa-solid fa-check-circle"></i> Done</span>'
+              : `<button class="btn btn-action btn-action-return shadow-sm" onclick="returnBook('${b.id}')"><i class="fa-solid fa-arrow-rotate-left me-1"></i> Return</button>`;
+
+            // Appended string modified to put Action column at the end
+            $("#tblBorrowings").append(
+              `<tr>
+                <td>${i + 1}</td>
+                <td>${mObj ? mObj.fullName : "Unknown"}</td>
+                <td class="fw-medium">${bObj ? bObj.title : "Unknown"}</td>
+                <td>${b.borrowDate}</td>
+                <td>${b.dueDate}</td>
+                <td>${b.returnDate || "-"}</td>
+                <td>${statusBadge}</td>
+                <td class="text-end">${actBtn}</td>
+               </tr>`
+            );
+          });
+      }
+
+      function returnBook(id) {
+        let borrows = JSON.parse(localStorage.getItem("borrowings")) || [];
+        let idx = borrows.findIndex((b) => b.id === id);
+        if (idx !== -1) {
+          borrows[idx].returnDate = new Date().toISOString().split("T")[0];
+          localStorage.setItem("borrowings", JSON.stringify(borrows));
+          updateBookStatus(borrows[idx].bookId, 1);
+          loadBorrowings();
+        }
+      }
+      function clearBorrowInputs() {
+        $("#ddlB_Member").val("");
+        $("#ddlB_Book").val("");
+        $("#txtB_DueDate").val("");
+        $("#txtB_BorrowDate").val(new Date().toISOString().split("T")[0]);
+      }
+
+      function bindBookDropdowns() {
+        let auths = JSON.parse(localStorage.getItem("authors")) || [];
+        $("#ddlBookAuthor").html('<option value="">-- Choose --</option>');
+        auths
+          .filter((a) => !a.isDeleted)
+          .forEach((a) =>
+            $("#ddlBookAuthor").append(
+              `<option value="${a.id}">${a.name}</option>`
+            )
+          );
+        let cats = JSON.parse(localStorage.getItem("categories")) || [];
+        $("#ddlBookCategory").html('<option value="">-- Choose --</option>');
+        cats
+          .filter((c) => !c.isDeleted)
+          .forEach((c) =>
+            $("#ddlBookCategory").append(
+              `<option value="${c.id}">${c.categoryName}</option>`
+            )
+          );
+      }
+
+      function saveBook() {
+        let t = $("#txtBookTitle").val();
+        let isbn = $("#txtBookIsbn").val();
+        let y = $("#txtBookYear").val();
+        let aId = $("#ddlBookAuthor").val();
+        let cId = $("#ddlBookCategory").val();
+        let st = parseInt($("#ddlBookStatus").val());
+        if (!t || !isbn) {
+          alert("Title & ISBN required");
+          return;
+        }
+        let books = JSON.parse(localStorage.getItem("books")) || [];
+        if (editBookId == null) {
+          books.push({
+            id: crypto.randomUUID(),
+            title: t,
+            isbn: isbn,
+            publishedYear: y,
+            authorId: aId,
+            categoryId: cId,
+            status: st,
+            isDeleted: false,
+          });
+        } else {
+          let idx = books.findIndex((b) => b.id === editBookId);
+          if (idx !== -1) {
+            books[idx].title = t;
+            books[idx].isbn = isbn;
+            books[idx].publishedYear = y;
+            books[idx].authorId = aId;
+            books[idx].categoryId = cId;
+            books[idx].status = st;
+          }
+        }
+        localStorage.setItem("books", JSON.stringify(books));
+        clearBookInputs();
+        loadBooks();
+      }
+
+      function loadBooks() {
+        let books = JSON.parse(localStorage.getItem("books")) || [];
+        let auths = JSON.parse(localStorage.getItem("authors")) || [];
+        let cats = JSON.parse(localStorage.getItem("categories")) || [];
+        $("#tblBooks").html("");
+        books
+          .filter((b) => !b.isDeleted)
+          .forEach((b, i) => {
+            let a = auths.find((au) => au.id === b.authorId);
+            let c = cats.find((ca) => ca.id === b.categoryId);
+            let badges = [
+              "",
+              '<span class="badge bg-success">Available</span>',
+              '<span class="badge bg-warning text-dark">Borrowed</span>',
+              '<span class="badge bg-danger">Lost</span>',
+            ];
+
+            // Reordered TDs and updated button classes
+            $("#tblBooks").append(`<tr>
+                  <td>${i + 1}</td>
+                  <td class="fw-medium">${b.title}</td>
+                  <td>${b.isbn}</td>
+                  <td>${b.publishedYear}</td>
+                  <td>${a ? a.name : "-"}</td>
+                  <td>${c ? c.categoryName : "-"}</td>
+                  <td>${badges[b.status]}</td>
+                  <td class="text-end text-nowrap">
+                    <button class="btn btn-action btn-action-edit me-1" onclick="editBook('${
+                      b.id
+                    }')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                    <button class="btn btn-action btn-action-delete" onclick="deleteBook('${
+                      b.id
+                    }')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                  </td>
+                </tr>`);
+          });
+      }
+
+      function editBook(id) {
+        let books = JSON.parse(localStorage.getItem("books")) || [];
+        let b = books.find((bk) => bk.id === id);
+        if (b) {
+          bindBookDropdowns();
+          $("#txtBookTitle").val(b.title);
+          $("#txtBookIsbn").val(b.isbn);
+          $("#txtBookYear").val(b.publishedYear);
+          $("#ddlBookAuthor").val(b.authorId);
+          $("#ddlBookCategory").val(b.categoryId);
+          $("#ddlBookStatus").val(b.status);
+          editBookId = id;
+          $("#btnSaveBook")
+            .html('<i class="fa-solid fa-pen"></i> Update')
+            .removeClass("btn-success")
+            .addClass("btn-primary");
+        }
+      }
+      function deleteBook(id) {
+        if (confirm("Delete this book?")) {
+          let books = JSON.parse(localStorage.getItem("books")) || [];
+          let idx = books.findIndex((b) => b.id === id);
+          if (idx !== -1) {
+            books[idx].isDeleted = true;
+            localStorage.setItem("books", JSON.stringify(books));
+            loadBooks();
+          }
+        }
+      }
+      function clearBookInputs() {
+        $("#txtBookTitle").val("");
+        $("#txtBookIsbn").val("");
+        $("#txtBookYear").val("");
+        $("#ddlBookAuthor").val("");
+        $("#ddlBookCategory").val("");
+        $("#ddlBookStatus").val("1");
+        editBookId = null;
+        $("#btnSaveBook")
+          .html('<i class="fa-solid fa-floppy-disk"></i> Save Book')
+          .removeClass("btn-primary")
+          .addClass("btn-success");
+      }
+      function updateBookStatus(id, st) {
+        let bks = JSON.parse(localStorage.getItem("books")) || [];
+        let idx = bks.findIndex((b) => b.id === id);
+        if (idx !== -1) {
+          bks[idx].status = st;
+          localStorage.setItem("books", JSON.stringify(bks));
+          loadBooks();
+        }
+      }
+
+      function saveMember() {
+        let name = $("#txtMemName").val();
+        let email = $("#txtMemEmail").val();
+        let phone = $("#txtMemPhone").val();
+        let join = $("#txtMemJoin").val();
+        if (!name || !email) return;
+        let mems = JSON.parse(localStorage.getItem("members")) || [];
+        if (editMemberId == null) {
+          mems.push({
+            id: crypto.randomUUID(),
+            fullName: name,
+            email: email,
+            phoneNumber: phone,
+            joinDate: join,
+            isDeleted: false,
+          });
+        } else {
+          let idx = mems.findIndex((m) => m.id === editMemberId);
+          if (idx !== -1) {
+            mems[idx].fullName = name;
+            mems[idx].email = email;
+            mems[idx].phoneNumber = phone;
+            mems[idx].joinDate = join;
+          }
+        }
+        localStorage.setItem("members", JSON.stringify(mems));
+        clearMemberInputs();
+        loadMembers();
+      }
+      function loadMembers() {
+        let mems = JSON.parse(localStorage.getItem("members")) || [];
+        $("#tblMembers").html("");
+        mems
+          .filter((m) => !m.isDeleted)
+          .forEach((m, i) => {
+            $("#tblMembers").append(
+              `<tr>
+                <td>${i + 1}</td>
+                <td class="fw-medium">${m.fullName}</td>
+                <td>${m.email}</td>
+                <td>${m.phoneNumber}</td>
+                <td>${m.joinDate}</td>
+                <td class="text-end text-nowrap">
+                  <button class="btn btn-action btn-action-edit me-1" onclick="editMember('${
+                    m.id
+                  }')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-action btn-action-delete" onclick="deleteMember('${
+                    m.id
+                  }')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>`
+            );
+          });
+      }
+      function editMember(id) {
+        let mems = JSON.parse(localStorage.getItem("members")) || [];
+        let m = mems.find((x) => x.id === id);
+        if (m) {
+          $("#txtMemName").val(m.fullName);
+          $("#txtMemEmail").val(m.email);
+          $("#txtMemPhone").val(m.phoneNumber);
+          $("#txtMemJoin").val(m.joinDate);
+          editMemberId = id;
+          $("#btnSaveMember")
+            .html('<i class="fa-solid fa-pen"></i> Update')
+            .removeClass("btn-success")
+            .addClass("btn-primary");
+        }
+      }
+      function deleteMember(id) {
+        if (confirm("Delete Member?")) {
+          let mems = JSON.parse(localStorage.getItem("members")) || [];
+          let idx = mems.findIndex((m) => m.id === id);
+          if (idx !== -1) {
+            mems[idx].isDeleted = true;
+            localStorage.setItem("members", JSON.stringify(mems));
+            loadMembers();
+          }
+        }
+      }
+      function clearMemberInputs() {
+        $("#txtMemName").val("");
+        $("#txtMemEmail").val("");
+        $("#txtMemPhone").val("");
+        $("#txtMemJoin").val("");
+        editMemberId = null;
+        $("#btnSaveMember")
+          .html('<i class="fa-solid fa-floppy-disk"></i> Save Member')
+          .removeClass("btn-primary")
+          .addClass("btn-success");
+      }
+
+      function saveAuthor() {
+        let name = $("#txtAuthName").val();
+        let bio = $("#txtAuthBio").val();
+        if (!name) return;
+        let auths = JSON.parse(localStorage.getItem("authors")) || [];
+        if (editAuthorId == null) {
+          auths.push({
+            id: crypto.randomUUID(),
+            name: name,
+            bio: bio,
+            isDeleted: false,
+          });
+        } else {
+          let idx = auths.findIndex((a) => a.id === editAuthorId);
+          if (idx !== -1) {
+            auths[idx].name = name;
+            auths[idx].bio = bio;
+          }
+        }
+        localStorage.setItem("authors", JSON.stringify(auths));
+        clearAuthorInputs();
+        loadAuthors();
+      }
+      function loadAuthors() {
+        let auths = JSON.parse(localStorage.getItem("authors")) || [];
+        $("#tblAuthors").html("");
+        auths
+          .filter((a) => !a.isDeleted)
+          .forEach((a, i) => {
+            $("#tblAuthors").append(
+              `<tr>
+                <td>${i + 1}</td>
+                <td class="fw-medium">${a.name}</td>
+                <td>${a.bio || "-"}</td>
+                <td class="text-end text-nowrap">
+                  <button class="btn btn-action btn-action-edit me-1" onclick="editAuthor('${
+                    a.id
+                  }')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-action btn-action-delete" onclick="deleteAuthor('${
+                    a.id
+                  }')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>`
+            );
+          });
+      }
+      function editAuthor(id) {
+        let auths = JSON.parse(localStorage.getItem("authors")) || [];
+        let a = auths.find((x) => x.id === id);
+        if (a) {
+          $("#txtAuthName").val(a.name);
+          $("#txtAuthBio").val(a.bio);
+          editAuthorId = id;
+          $("#btnSaveAuthor")
+            .html('<i class="fa-solid fa-pen"></i> Update')
+            .removeClass("btn-success")
+            .addClass("btn-primary");
+        }
+      }
+      function deleteAuthor(id) {
+        let books = JSON.parse(localStorage.getItem("books")) || [];
+        let hasBooks = books.some(
+          (b) => b.authorId === id && b.isDeleted === false
+        );
+
+        if (hasBooks) {
+          alert(
+            "⚠️ တောင်းပန်ပါသည်။ ဤစာရေးဆရာ၏ စာအုပ်များ စနစ်ထဲတွင် ကျန်ရှိနေသေးသဖြင့် ဖျက်၍မရပါ။ စာအုပ်များကို အရင်ဖျက်ပါ (သို့) ပြင်ပါ။"
+          );
+          return;
+        }
+        if (confirm("Are you sure you want to delete this Author?")) {
+          let auths = JSON.parse(localStorage.getItem("authors")) || [];
+          let idx = auths.findIndex((a) => a.id === id);
+          if (idx !== -1) {
+            auths[idx].isDeleted = true;
+            localStorage.setItem("authors", JSON.stringify(auths));
+            loadAuthors();
+          }
+        }
+      }
+      function clearAuthorInputs() {
+        $("#txtAuthName").val("");
+        $("#txtAuthBio").val("");
+        editAuthorId = null;
+        $("#btnSaveAuthor")
+          .html('<i class="fa-solid fa-floppy-disk"></i> Save Author')
+          .removeClass("btn-primary")
+          .addClass("btn-success");
+      }
+
+      function saveCategory() {
+        let name = $("#txtCatName").val().trim();
+        if (!name) return;
+        let cats = JSON.parse(localStorage.getItem("categories")) || [];
+        if (editCategoryId == null) {
+          cats.push({
+            id: crypto.randomUUID(),
+            categoryName: name,
+            isDeleted: false,
+          });
+        } else {
+          let idx = cats.findIndex((c) => c.id === editCategoryId);
+          if (idx !== -1) {
+            cats[idx].categoryName = name;
+          }
+        }
+        localStorage.setItem("categories", JSON.stringify(cats));
+        clearCategoryInputs();
+        loadCategories();
+      }
+      function loadCategories() {
+        let cats = JSON.parse(localStorage.getItem("categories")) || [];
+        $("#tblCategories").html("");
+        cats
+          .filter((c) => !c.isDeleted)
+          .forEach((c, i) => {
+            $("#tblCategories").append(
+              `<tr>
+                <td>${i + 1}</td>
+                <td class="fw-medium">${c.categoryName}</td>
+                <td class="text-end text-nowrap">
+                  <button class="btn btn-action btn-action-edit me-1" onclick="editCategory('${
+                    c.id
+                  }')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                  <button class="btn btn-action btn-action-delete" onclick="deleteCategory('${
+                    c.id
+                  }')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>`
+            );
+          });
+      }
+      function editCategory(id) {
+        let cats = JSON.parse(localStorage.getItem("categories")) || [];
+        let c = cats.find((x) => x.id === id);
+        if (c) {
+          $("#txtCatName").val(c.categoryName);
+          editCategoryId = id;
+          $("#btnSaveCategory")
+            .html('<i class="fa-solid fa-pen"></i> Update')
+            .removeClass("btn-success")
+            .addClass("btn-primary");
+        }
+      }
+      function deleteCategory(id) {
+        let books = JSON.parse(localStorage.getItem("books")) || [];
+        let hasBooks = books.some(
+          (b) => b.categoryId === id && b.isDeleted === false
+        );
+
+        if (hasBooks) {
+          alert(
+            "⚠️ တောင်းပန်ပါသည်။ ဤအမျိုးအစားဝင် စာအုပ်များ စနစ်ထဲတွင် ကျန်ရှိနေသေးသဖြင့် ဖျက်၍မရပါ။ စာအုပ်များကို အရင်ဖျက်ပါ (သို့) ပြင်ပါ။"
+          );
+          return;
+        }
+
+        if (confirm("Are you sure you want to delete this Category?")) {
+          let cats = JSON.parse(localStorage.getItem("categories")) || [];
+          let idx = cats.findIndex((c) => c.id === id);
+          if (idx !== -1) {
+            cats[idx].isDeleted = true;
+            localStorage.setItem("categories", JSON.stringify(cats));
+            loadCategories();
+          }
+        }
+      }
+      function clearCategoryInputs() {
+        $("#txtCatName").val("");
+        editCategoryId = null;
+        $("#btnSaveCategory")
+          .html('<i class="fa-solid fa-floppy-disk"></i> Save')
+          .removeClass("btn-primary")
+          .addClass("btn-success");
+      }
+
+      // ==========================================
+      // 6. FINES FEATURE
+      // ==========================================
+      let editFineId = null;
+
+      function bindFineDropdowns() {
+        let borrows = JSON.parse(localStorage.getItem("borrowings")) || [];
+        let mems = JSON.parse(localStorage.getItem("members")) || [];
+        let bks = JSON.parse(localStorage.getItem("books")) || [];
+        let fines = JSON.parse(localStorage.getItem("fines")) || [];
+
+        $("#ddlF_Borrowing").html(
+          '<option value="">-- Choose Overdue Record --</option>'
+        );
+
+        let today = new Date().toISOString().split("T")[0];
+
+        borrows
+          .filter((b) => !b.isDeleted)
+          .forEach((b) => {
+            let fine = fines.find(
+              (f) => f.borrowingId === b.id && !f.isDeleted
+            );
+
+            let isOverdueNotReturned =
+              !b.returnDate && new Date(b.dueDate) < new Date(today);
+            let isReturnedLate =
+              b.returnDate && new Date(b.dueDate) < new Date(b.returnDate);
+
+            if (
+              isOverdueNotReturned ||
+              (isReturnedLate && (!fine || !fine.isPaid)) ||
+              (fine && !fine.isPaid)
+            ) {
+              let m = mems.find((x) => x.id === b.memberId);
+              let bk = bks.find((x) => x.id === b.bookId);
+              let text = `${m ? m.fullName : "Unknown"} - ${
+                bk ? bk.title : "Unknown"
+              } (Due: ${b.dueDate})`;
+
+              $("#ddlF_Borrowing").append(
+                `<option value="${b.id}">${text}</option>`
+              );
+            }
+          });
+      }
+
+      function saveFine() {
+        let bId = $("#ddlF_Borrowing").val();
+        let amt = parseFloat($("#txtF_Amount").val());
+        let isPaid = $("#chkF_IsPaid").is(":checked");
+
+        if (!bId || isNaN(amt)) {
+          alert("Please select a borrowing record and enter a valid amount.");
+          return;
+        }
+
+        let fines = JSON.parse(localStorage.getItem("fines")) || [];
+
+        if (editFineId == null) {
+          fines.push({
+            id: crypto.randomUUID(), // Acts as FineId
+            borrowingId: bId,
+            amount: amt,
+            isPaid: isPaid,
+            isDeleted: false,
+          });
+        } else {
+          let idx = fines.findIndex((f) => f.id === editFineId);
+          if (idx !== -1) {
+            fines[idx].borrowingId = bId;
+            fines[idx].amount = amt;
+            fines[idx].isPaid = isPaid;
+          }
+        }
+
+        localStorage.setItem("fines", JSON.stringify(fines));
+        if (isPaid) {
+          let borrows = JSON.parse(localStorage.getItem("borrowings")) || [];
+          let bIdx = borrows.findIndex((b) => b.id === bId);
+          if (bIdx !== -1 && !borrows[bIdx].returnDate) {
+            let today = new Date().toISOString().split("T")[0];
+            borrows[bIdx].returnDate = today;
+            localStorage.setItem("borrowings", JSON.stringify(borrows));
+            updateBookStatus(borrows[bIdx].bookId, 1);
+          }
+        }
+
+        clearFineInputs();
+        loadFines();
+        loadBorrowings();
+        calculateOverview();
+        bindFineDropdowns(); 
+      }
+
+      function loadFines() {
+        let fines = JSON.parse(localStorage.getItem("fines")) || [];
+        let borrows = JSON.parse(localStorage.getItem("borrowings")) || [];
+        let mems = JSON.parse(localStorage.getItem("members")) || [];
+        let bks = JSON.parse(localStorage.getItem("books")) || [];
+
+        $("#tblFines").html("");
+
+        fines
+          .filter((f) => !f.isDeleted)
+          .forEach((f, i) => {
+            // Resolve Relationships (Fine -> Borrowing -> Member & Book)
+            let b = borrows.find((x) => x.id === f.borrowingId);
+            let mObj = b ? mems.find((x) => x.id === b.memberId) : null;
+            let bObj = b ? bks.find((x) => x.id === b.bookId) : null;
+
+            let memberName = mObj ? mObj.fullName : "Unknown";
+            let bookTitle = bObj ? bObj.title : "Unknown";
+            let statusBadge = f.isPaid
+              ? '<span class="badge bg-success">Paid</span>'
+              : '<span class="badge bg-danger">Unpaid</span>';
+
+            $("#tblFines").append(
+              `<tr>
+              <td>${i + 1}</td>
+              <td class="fw-medium">${memberName}</td>
+              <td>${bookTitle}</td>
+              <td class="fw-bold text-danger">$${parseFloat(f.amount).toFixed(
+                2
+              )}</td>
+              <td>${statusBadge}</td>
+              <td class="text-end text-nowrap">
+                <button class="btn btn-action btn-action-edit me-1" onclick="editFine('${
+                  f.id
+                }')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn btn-action btn-action-delete" onclick="deleteFine('${
+                  f.id
+                }')" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              </td>
+            </tr>`
+            );
+          });
+      }
+
+      function editFine(id) {
+        let fines = JSON.parse(localStorage.getItem("fines")) || [];
+        let f = fines.find((x) => x.id === id);
+        if (f) {
+          bindFineDropdowns();
+          $("#ddlF_Borrowing").val(f.borrowingId);
+          $("#txtF_Amount").val(f.amount);
+          $("#chkF_IsPaid").prop("checked", f.isPaid);
+
+          editFineId = id;
+          $("#btnSaveFine")
+            .html('<i class="fa-solid fa-pen"></i> Update')
+            .removeClass("btn-success")
+            .addClass("btn-primary");
+        }
+      }
+
+      function deleteFine(id) {
+        if (confirm("Are you sure you want to delete this fine record?")) {
+          let fines = JSON.parse(localStorage.getItem("fines")) || [];
+          let idx = fines.findIndex((f) => f.id === id);
+          if (idx !== -1) {
+            fines[idx].isDeleted = true;
+            localStorage.setItem("fines", JSON.stringify(fines));
+            loadFines();
+          }
+        }
+      }
+
+      function clearFineInputs() {
+        $("#ddlF_Borrowing").val("");
+        $("#txtF_Amount").val("");
+        $("#chkF_IsPaid").prop("checked", false);
+        editFineId = null;
+        $("#btnSaveFine")
+          .html('<i class="fa-solid fa-floppy-disk"></i> Save')
+          .removeClass("btn-primary")
+          .addClass("btn-success");
+      }
+    </script>
+  </body>
+</html>

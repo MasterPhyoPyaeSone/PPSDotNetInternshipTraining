@@ -23,6 +23,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Category> Categories { get; set; }
 
+    public virtual DbSet<Fine> Fines { get; set; }
+
     public virtual DbSet<Member> Members { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -80,6 +82,20 @@ public partial class AppDbContext : DbContext
             entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A0BBF252623");
 
             entity.Property(e => e.CategoryName).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<Fine>(entity =>
+        {
+            entity.HasKey(e => e.FineId).HasName("PK__Fines__9D4A9B2C386438C5");
+
+            entity.HasIndex(e => e.BorrowingId, "UQ__Fines__6CD933D69054E123").IsUnique();
+
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Borrowing).WithOne(p => p.Fine)
+                .HasForeignKey<Fine>(d => d.BorrowingId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Fines__Borrowing__72C60C4A");
         });
 
         modelBuilder.Entity<Member>(entity =>

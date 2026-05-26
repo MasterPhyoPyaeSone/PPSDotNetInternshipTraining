@@ -1,9 +1,12 @@
+using System.Text.Json.Serialization;
 using static PPSDotNetInternshipTraining.WebApi.Database.AppDbContextModels.Book;
+using static PPSDotNetInternshipTraining.WebApi.Models.BookCreateRequestModel;
 
 namespace PPSDotNetInternshipTraining.WebApi.Models;
 
 public class BookCreateRequestModel
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum BookStatus
     {
         Available,

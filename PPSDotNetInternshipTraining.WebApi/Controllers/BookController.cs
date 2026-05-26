@@ -171,7 +171,7 @@ public class BookController : ControllerBase
         if (requestModel.Status.HasValue) 
         {
             count++;
-            item.Status = requestModel.Status.Value;
+            item.Status = (int)requestModel.Status.Value;
         }
 
         if (count == 0)
@@ -231,7 +231,7 @@ public class BookController : ControllerBase
         item.PublishedYear = requestModel.PublishedYear;
         item.AuthorId = requestModel.AuthorId;
         item.CategoryId = requestModel.CategoryId;
-        item.Status = requestModel.Status;
+        item.Status = (int)requestModel.Status;
 
         var result = _db.SaveChanges();
         return Ok(new BookUpdateResponseModel

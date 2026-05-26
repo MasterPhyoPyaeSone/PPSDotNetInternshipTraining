@@ -21,5 +21,7 @@ public partial class Borrowing
 
     public virtual Book Book { get; set; } = null!;
 
+    public virtual Fine? Fine { get; set; }
+
     public virtual Member Member { get; set; } = null!;
 }
