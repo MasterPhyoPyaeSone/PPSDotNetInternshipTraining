@@ -14,9 +14,9 @@ namespace PPSDotNetInternshipTraining.WebApi.Controllers;
 public class BookController : ControllerBase
 {
     private readonly AppDbContext _db;
-    public BookController()
+    public BookController(AppDbContext db)
     {
-        _db = new AppDbContext();
+        _db = db;
     }
     [HttpGet()]
     public IActionResult GetBook()

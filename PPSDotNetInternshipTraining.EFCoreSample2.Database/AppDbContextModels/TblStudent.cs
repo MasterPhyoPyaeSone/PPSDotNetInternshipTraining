@@ -15,7 +15,7 @@ public partial class TblStudent
 
     public string? Address { get; set; }
 
-    public DateOnly? DateOfBirth { get; set; }
+    public DateTime? DateOfBirth { get; set; }
 
     public bool IsDelete { get; set; }
 
