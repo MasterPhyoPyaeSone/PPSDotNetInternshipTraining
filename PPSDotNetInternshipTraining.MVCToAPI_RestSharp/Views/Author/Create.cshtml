@@ -1,0 +1,42 @@
+@model AuthorCreateModel
+
+@{
+    ViewData["Title"] = "Create Author";
+}
+
+<div class="container mt-4">
+    <h2>Create New Author</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label fw-bold">Author Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter author name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="Bio" class="control-label fw-bold">Biography</label>
+                    <textarea asp-for="Bio" class="form-control" rows="5" placeholder="Enter biography"></textarea>
+                    <span asp-validation-for="Bio" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Save Author</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

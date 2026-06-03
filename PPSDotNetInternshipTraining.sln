@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining.ConsoleToAPI", "PPSDotNetInternshipTraining.ConsoleToAPI\PPSDotNetInternshipTraining.ConsoleToAPI.csproj", "{63BD4547-BFFF-4702-8748-63A70A7B0163}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining.MVCToAPI", "PPSDotNetInternshipTraining.MVCToAPI\PPSDotNetInternshipTraining.MVCToAPI.csproj", "{CD502605-2488-417A-BF36-C3AA8B577228}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining.MVCToAPI_RestSharp", "PPSDotNetInternshipTraining.MVCToAPI_RestSharp\PPSDotNetInternshipTraining.MVCToAPI_RestSharp.csproj", "{378A2E98-B7B5-4315-99CA-7B37633860F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,5 +70,13 @@ Global
 		{63BD4547-BFFF-4702-8748-63A70A7B0163}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63BD4547-BFFF-4702-8748-63A70A7B0163}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63BD4547-BFFF-4702-8748-63A70A7B0163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD502605-2488-417A-BF36-C3AA8B577228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD502605-2488-417A-BF36-C3AA8B577228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD502605-2488-417A-BF36-C3AA8B577228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD502605-2488-417A-BF36-C3AA8B577228}.Release|Any CPU.Build.0 = Release|Any CPU
+		{378A2E98-B7B5-4315-99CA-7B37633860F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{378A2E98-B7B5-4315-99CA-7B37633860F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{378A2E98-B7B5-4315-99CA-7B37633860F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{378A2E98-B7B5-4315-99CA-7B37633860F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

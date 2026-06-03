@@ -1,0 +1,91 @@
+@model PagerModel
+
+<style>
+    .modern-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: inherit;
+    }
+
+    .modern-pagination a,
+    .modern-pagination span {
+        text-decoration: none;
+        color: #4a5568;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+        min-width: 38px;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+    }
+
+    .modern-pagination a.page-num:hover {
+        background-color: #edf2f7;
+    }
+
+    .modern-pagination a.active {
+        background-color: #e3f2fd;
+        color: #0d6efd;
+        font-weight: 600;
+    }
+
+    .modern-pagination a.page-nav {
+        border-radius: 20px;
+        padding: 0 16px;
+        gap: 8px;
+    }
+
+    .modern-pagination a.page-nav:hover:not(.disabled) {
+        background-color: #edf2f7;
+    }
+
+    .modern-pagination a.disabled {
+        color: #a0aec0;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    .modern-pagination .dots {
+        pointer-events: none;
+        color: #718096;
+    }
+</style>
+
+@if (Model.TotalPages > 0)
+{
+    <div class="modern-pagination mt-5 mb-4">
+
+        <a class="page-nav @(Model.CurrentPage == 1 ? "disabled" : "")" asp-action="@Model.Action"
+            asp-route-CurrentPage="@(Model.CurrentPage - 1)">
+            <span>&larr;</span> Previous
+        </a>
+
+        @{
+            int current = Model.CurrentPage;
+            int total = Model.TotalPages;
+        }
+
+        @for (int i = 1; i <= total; i++)
+        {
+            if (i == 1 || i == total || (i >= current - 1 && i <= current + 1))
+            {
+                <a class="page-num @(i == current ? "active" : "")" asp-action="@Model.Action" asp-route-CurrentPage="@i">
+                    @i
+                </a>
+            }
+            else if (i == current - 2 || i == current + 2)
+            {
+                <span class="dots">...</span>
+            }
+        }
+
+        <a class="page-nav @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")" asp-action="@Model.Action"
+            asp-route-CurrentPage="@(Model.CurrentPage + 1)">
+            Next <span>&rarr;</span>
+        </a>
+    </div>
+}

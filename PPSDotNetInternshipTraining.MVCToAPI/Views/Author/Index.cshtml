@@ -1,0 +1,66 @@
+@model IEnumerable<AuthorViewModel>
+
+@{
+    ViewData["Title"] = "Authors List";
+}
+
+
+<div class="container mt-4">
+
+    <h2>Authors List</h2>
+    <a href="/Author/Create" class="btn btn-primary mb-3">Create New Author</a>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Bio</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+             
+                int no = ((ViewBag.CurrentPage - 1) * ViewBag.PageSize) + 1;
+            }
+
+            @if (Model != null && Model.Any())
+            {
+
+                foreach (var author in Model)
+                {
+                    <tr>
+                        <td>@no</td>
+                        <td>@author.Name</td>
+                        <td>@author.Bio</td>
+                        <td>
+                            <a href="/Author/Edit/@author.AuthorId" class="btn btn-sm btn-warning">Edit</a>
+                            <form asp-action="Delete" method="post" class="d-inline delete-form">
+                                <input type="hidden" name="id" value="@author.AuthorId" />
+
+                                <button type="button" class="btn btn-sm btn-danger btn-delete">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    no++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No authors found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <partial name="_Pagination"
+        model='new PagerModel { CurrentPage = ViewBag.CurrentPage, TotalPages = ViewBag.TotalPages, Action = "Index" }' />
+</div>
+
+@section Scripts {
+  <partial name="_SweetAlertScripts" />
+}
