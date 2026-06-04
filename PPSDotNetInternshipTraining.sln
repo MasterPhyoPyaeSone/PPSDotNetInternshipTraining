@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining.MVCToAPI_RestSharp", "PPSDotNetInternshipTraining.MVCToAPI_RestSharp\PPSDotNetInternshipTraining.MVCToAPI_RestSharp.csproj", "{378A2E98-B7B5-4315-99CA-7B37633860F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPSDotNetInternshipTraining.MvcApp.Ajax", "PPSDotNetInternshipTraining.MvcApp.Ajax\PPSDotNetInternshipTraining.MvcApp.Ajax.csproj", "{7E46BBC3-4427-4B84-83F3-61FDB0BE473D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,5 +80,9 @@ Global
 		{378A2E98-B7B5-4315-99CA-7B37633860F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{378A2E98-B7B5-4315-99CA-7B37633860F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{378A2E98-B7B5-4315-99CA-7B37633860F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E46BBC3-4427-4B84-83F3-61FDB0BE473D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E46BBC3-4427-4B84-83F3-61FDB0BE473D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E46BBC3-4427-4B84-83F3-61FDB0BE473D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E46BBC3-4427-4B84-83F3-61FDB0BE473D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
