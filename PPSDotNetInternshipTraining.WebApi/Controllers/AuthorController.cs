@@ -9,9 +9,9 @@ namespace PPSDotNetInternshipTraining.WebApi.Controllers;
 public class AuthorController : ControllerBase
 {
     private readonly AppDbContext _db;
-    public AuthorController()
+    public AuthorController(AppDbContext db)
     {
-        _db = new AppDbContext();
+        _db = db;
     }
 
     [HttpGet]

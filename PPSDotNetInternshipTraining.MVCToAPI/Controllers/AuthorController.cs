@@ -6,31 +6,43 @@ using PPSDotNetInternshipTraining.MVCToAPI.Models;
 
 public class AuthorController : Controller
 {
-    private readonly HttpClient _httpClient;
+    // private readonly HttpClient _httpClient;
+
+    // public AuthorController(IHttpClientFactory httpClientFactory)
+    // {
+    //     // Program.cs မှာ မှတ်ထားတဲ့ "MyApi" ကို လှမ်းယူလိုက်ပါတယ်
+    //     _httpClient = httpClientFactory.CreateClient("MyApi");
+    // }
+
+    private readonly IHttpClientFactory httpClientFactory;
     public AuthorController(IHttpClientFactory httpClientFactory)
     {
-        // Program.cs မှာ မှတ်ထားတဲ့ "MyApi" ကို လှမ်းယူလိုက်ပါတယ်
-        _httpClient = httpClientFactory.CreateClient("MyApi");
+        this.httpClientFactory = httpClientFactory;
     }
 
-  
+
     public async Task<IActionResult> Index(int CurrentPage = 1)
     {
         List<AuthorViewModel> authors = new List<AuthorViewModel>();
+        var _httpClient = httpClientFactory.CreateClient();
 
         try
         {
-            var result = await _httpClient.GetFromJsonAsync<List<AuthorViewModel>>("Author");
+            // var result = await _httpClient.GetFromJsonAsync<List<AuthorViewModel>>("Author");
+            var httpClient = httpClientFactory.CreateClient();
+            const int pageSize = 1;
+            if (CurrentPage < 1) CurrentPage = 1;
+            ViewBag.CurrentPage = CurrentPage;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = 10;
+            var result = await httpClient.GetFromJsonAsync<List<AuthorViewModel>>("http://localhost:5107/api/Author");
             if (result != null)
             {
                 authors = result.OrderByDescending(a => a.AuthorId).ToList();
-                const int pageSize = 1;
-                if (CurrentPage < 1) CurrentPage = 1;
+
                 int recsCount = authors.Count();
-                int totalPages = (int)Math.Ceiling((decimal)recsCount / pageSize);
-                ViewBag.CurrentPage = CurrentPage;
-                ViewBag.PageSize = pageSize;
-                ViewBag.TotalPages = totalPages;
+                ViewBag.TotalPages = (int)Math.Ceiling((decimal)recsCount / pageSize);
+                // ViewBag.TotalPages = totalPages;
                 authors = authors.Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
             }
         }
@@ -57,7 +69,9 @@ public class AuthorController : Controller
         }
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("Author", model);
+            var _httpClient = httpClientFactory.CreateClient();
+            var apiUrl = "http://localhost:5107/api/Author";
+            var response = await _httpClient.PostAsJsonAsync(apiUrl, model);
             if (response.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Author created successfully!";
@@ -75,13 +89,13 @@ public class AuthorController : Controller
 
         return RedirectToAction("Index");
     }
-
-    [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
         try
         {
-            var response = await _httpClient.GetFromJsonAsync<AuthorEditModel>($"Author/{id}");
+            var _httpClient = httpClientFactory.CreateClient();
+            var apiUrl = $"http://localhost:5107/api/Author/{id}";
+            var response = await _httpClient.GetFromJsonAsync<AuthorEditModel>(apiUrl);
             if (response is null)
             {
                 return NotFound();
@@ -96,6 +110,7 @@ public class AuthorController : Controller
         }
     }
 
+    [HttpPost]
     public async Task<IActionResult> Edit(int id, AuthorEditModel model)
     {
         if (!ModelState.IsValid)
@@ -104,7 +119,9 @@ public class AuthorController : Controller
         }
         try
         {
-            var response = await _httpClient.PutAsJsonAsync($"Author/{id}", model);
+            var _httpClient = httpClientFactory.CreateClient();
+            var apiUrl = $"http://localhost:5107/api/Author/{id}";
+            var response = await _httpClient.PutAsJsonAsync(apiUrl, model);
             if (response.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Author updated successfully!";
@@ -126,7 +143,9 @@ public class AuthorController : Controller
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"Author/{id}");
+            var _httpClient = httpClientFactory.CreateClient();
+            var apiUrl = $"http://localhost:5107/api/Author/{id}";
+            var response = await _httpClient.DeleteAsync(apiUrl);
             if (response.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Author deleted successfully!";
@@ -137,6 +156,6 @@ public class AuthorController : Controller
         {
             ModelState.AddModelError(string.Empty, "An error occurred while deleting the author. Please try again later.");
         }
-        return View();
+        return RedirectToAction("Index");
     }
 }

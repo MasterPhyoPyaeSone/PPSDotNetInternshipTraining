@@ -6,6 +6,7 @@ builder.Services.AddHttpClient("MyApi", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5107/api/");
 });
+// builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
