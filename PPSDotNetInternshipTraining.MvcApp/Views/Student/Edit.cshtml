@@ -1,0 +1,34 @@
+@model StudentEditResponseModel
+
+<h2>Add Student</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label>Student No</label>
+        <input asp-for="StudentNo" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Student Name</label>
+        <input asp-for="StudentName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Father's Name</label>
+        <input asp-for="FatherName" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Address</label>
+        <textarea asp-for="Address" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Date of Birth</label>
+        <input asp-for="DateOfBirth" asp-format="{0:yyyy-MM-dd}" type="date" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Save Student</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Cancel</a>
+</form>

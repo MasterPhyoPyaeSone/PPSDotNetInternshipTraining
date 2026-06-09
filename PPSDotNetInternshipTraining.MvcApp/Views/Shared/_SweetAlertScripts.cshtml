@@ -1,0 +1,43 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function () {
+
+        // 1. Success Alert (Shows after Create / Edit / Delete actions)
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage !== '') {
+            Swal.fire({
+                title: 'Success!',
+                text: successMessage,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                timer: 3000
+            });
+        }
+
+        // 2. Delete Confirmation Alert
+        $('.btn-delete').on('click', function () {
+
+            // Store the specific form that belongs to the clicked button
+            var form = $(this).closest('form');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545', // Red (Danger)
+                cancelButtonColor: '#6c757d',  // Gray (Secondary)
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+
+                // Only submit the form to the C# Controller if the user clicked "Yes"
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+
+    });
+</script>

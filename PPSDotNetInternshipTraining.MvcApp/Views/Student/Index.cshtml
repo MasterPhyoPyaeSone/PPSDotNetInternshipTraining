@@ -1,11 +1,14 @@
-@model IEnumerable<StudentResponseModel>
+@using PPSDotNetInternshipTraining.MVC.Models
+@model IEnumerable<StudentListResponseModel>
 @{ 
     ViewData["Title"] = "Student List";
     int count = 0;
 
 }
 <div class="container mt-4">
+    <a href="/Student/Create" class="btn btn-primary mb-3">Create New Student</a>
     <div class="card shadow-sm">
+
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Student Information List</h5>
             <span class="badge bg-primary">Total Records</span>
@@ -30,9 +33,12 @@
                     </thead>
                     <tbody>
                     @{
-                        int currentPage = ViewBag.CurrentPage != null ? (int)ViewBag.CurrentPage : 1;
-                        int pageSize = ViewBag.PageSize != null ? (int)ViewBag.PageSize : 3;
-                        int no = (( currentPage - 1) * pageSize) + 1;
+                        // int currentPage = ViewBag.CurrentPage != null ? Convert.ToInt32(ViewBag.CurrentPage) : 1;
+                        // int pageSize = ViewBag.PageSize != null ? Convert.ToInt32(ViewBag.PageSize) : 10;
+                        // int no = ((currentPage - 1) * pageSize) + 1;
+                        int no = (((int)ViewBag.CurrentPage - 1) * (int)ViewBag.PageSize) + 1;
+
+
                     }
                     @foreach (var student in Model){
 
@@ -50,8 +56,13 @@
                             <td>@student.ModifiedDateTime</td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <button type="button" class="btn btn-outline-primary" title="Edit"><i class="bi bi-pencil"></i> Edit</button>
-                                    <button type="button" class="btn btn-outline-danger" title="Delete"><i class="bi bi-trash"></i> Delete</button>
+                                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-controller="Student" asp-route-id="@student.StudentId" ><i class="bi bi-pencil"></i> Edit</a>
+                                <form asp-action="Delete" method="post" class="d-inline delete-form">
+                                <input type="hidden" name="id" value="@student.StudentId" />
+                                <button type="button" class="btn btn-sm btn-danger btn-delete">
+                                    Delete
+                                </button>
+                                </form>
                                 </div>
                             </td>
                         </tr>
@@ -59,8 +70,10 @@
                     }                        
                     </tbody>
                 </table>
+                  <partial name="_Pagination"
+        model='new PagerModel { CurrentPage = ViewBag.CurrentPage, TotalPages = ViewBag.TotalPages, Action = "Index" }' />
 
-            @if (ViewBag.TotalPages > 1)
+            @* @if (ViewBag.TotalPages > 1)
             {
                 <div class="d-flex justify-content-between align-items-center mt-4 px-3 pb-3">
 
@@ -96,7 +109,7 @@
             <ElicitationsGroup message="Next Steps">
                 <Elicitation label="Add a Search Box"
                     query="Now that I have pagination, how do I add a Search/Filter box so users can search for an author by name, while keeping the pagination working?" />
-            </ElicitationsGroup>
+            </ElicitationsGroup> *@
 
         @* else
         {
@@ -108,3 +121,6 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <partial name="_SweetAlertScripts" />
+}

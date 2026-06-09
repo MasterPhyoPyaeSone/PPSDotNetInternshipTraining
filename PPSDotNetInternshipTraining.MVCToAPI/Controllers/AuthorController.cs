@@ -32,9 +32,8 @@ public class AuthorController : Controller
             var httpClient = httpClientFactory.CreateClient();
             const int pageSize = 1;
             if (CurrentPage < 1) CurrentPage = 1;
-            ViewBag.CurrentPage = CurrentPage;
-            ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = 10;
+
+
             var result = await httpClient.GetFromJsonAsync<List<AuthorViewModel>>("http://localhost:5107/api/Author");
             if (result != null)
             {
@@ -42,7 +41,8 @@ public class AuthorController : Controller
 
                 int recsCount = authors.Count();
                 ViewBag.TotalPages = (int)Math.Ceiling((decimal)recsCount / pageSize);
-                // ViewBag.TotalPages = totalPages;
+                ViewBag.CurrentPage = CurrentPage;
+                ViewBag.PageSize = pageSize;
                 authors = authors.Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
             }
         }
