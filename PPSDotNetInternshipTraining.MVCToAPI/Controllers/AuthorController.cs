@@ -32,8 +32,6 @@ public class AuthorController : Controller
             var httpClient = httpClientFactory.CreateClient();
             const int pageSize = 1;
             if (CurrentPage < 1) CurrentPage = 1;
-
-
             var result = await httpClient.GetFromJsonAsync<List<AuthorViewModel>>("http://localhost:5107/api/Author");
             if (result != null)
             {

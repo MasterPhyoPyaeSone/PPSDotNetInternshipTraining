@@ -1,0 +1,56 @@
+@page "/authors/edit/{Id:int}"
+@rendermode InteractiveServer
+@inject AuthorService authorService
+@inject NavigationManager navManager
+
+<h3>Edit Author</h3>
+<hr />
+
+@if (isLoading)
+{
+    <p><em>Loading author details...</em></p>
+}
+else
+{
+    <AuthorForm Model="requestModel" 
+                IsEditMode="true" 
+                OnSave="HandleSave" 
+                OnCancel="HandleCancel" />
+}
+
+@code {
+    // URL မှလာသော ID ကို ဖမ်းယူရန်
+    [Parameter]
+    public int Id { get; set; }
+
+    private AuthorRequestModel requestModel = new();
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Page စတက်သည်နှင့် ID ကိုအသုံးပြု၍ API မှ Data လှမ်းယူမည်
+        var author = await authorService.GetAuthorByIdAsync(Id);
+        
+        if (author != null)
+        {
+            requestModel = new AuthorRequestModel
+            {
+                Name = author.Name,
+                Bio = author.Bio
+            };
+        }
+        
+        isLoading = false;
+    }
+
+    private async Task HandleSave(AuthorRequestModel model)
+    {
+        await authorService.UpdateAuthorAsync(Id, model);
+        navManager.NavigateTo("/authors");
+    }
+
+    private void HandleCancel()
+    {
+        navManager.NavigateTo("/authors");
+    }
+}

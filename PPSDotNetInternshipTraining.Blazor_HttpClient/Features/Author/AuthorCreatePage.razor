@@ -1,0 +1,39 @@
+@page "/authors/create"
+@rendermode InteractiveServer
+@inject AuthorService authorService
+@inject NavigationManager navManager
+
+<h3>Create New Author</h3>
+<hr />
+
+<AuthorForm Model="requestModel"
+            IsEditMode="false"
+            OnSave="HandleSave"
+            OnCancel="HandleCancel" />
+
+@code
+{
+    private AuthorRequestModel requestModel = new();
+
+    private async Task HandleSave(AuthorRequestModel model)
+    {
+        try
+        {
+            // API သို့ Data လှမ်းပို့မည်
+            await authorService.CreateAuthorAsync(model);
+
+            // အောင်မြင်ပါက Main Page သို့ ပြန်သွားမည်
+            navManager.NavigateTo("/authors");
+        }
+        catch (Exception ex)
+        {
+            // API ပိုင်းဆိုင်ရာ Error တက်ခဲ့လျှင် App ရပ်မသွားဘဲ Console တွင် Error ကို ပြပေးပါမည်
+            Console.WriteLine($"Error saving author: {ex.Message}");
+        }
+    }
+
+    private void HandleCancel()
+    {
+        navManager.NavigateTo("/authors");
+    }
+}

@@ -1,0 +1,36 @@
+<div class="author-card p-3 border rounded shadow-sm">
+    <EditForm Model="@Model" OnValidSubmit="() => OnSave.InvokeAsync(Model)" class="author-form">
+        <DataAnnotationsValidator />
+        
+        <h5 class="mb-3">@(IsEditMode ? "Edit Author" : "Add New Author")</h5>
+        
+        <div class="mb-2">
+            <label>Name:</label>
+            <input @bind="Model.Name" class="form-control" />
+            <ValidationMessage For="@(() => Model.Name)" class="text-danger" />
+        </div>
+
+        <div class="mb-3">
+            <label>Bio:</label>
+            <textarea @bind="Model.Bio" class="form-control"></textarea>
+            <ValidationMessage For="@(() => Model.Bio)" class="text-danger" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary ms-2" @onclick="() => OnCancel.InvokeAsync()">Cancel</button>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public AuthorRequestModel Model { get; set; } = new AuthorRequestModel();
+
+    [Parameter]
+    public EventCallback<AuthorRequestModel> OnSave { get; set; }
+    
+    [Parameter]
+    public bool IsEditMode { get; set; }
+    
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+}

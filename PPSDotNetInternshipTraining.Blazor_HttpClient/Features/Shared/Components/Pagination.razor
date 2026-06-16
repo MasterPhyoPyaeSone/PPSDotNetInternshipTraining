@@ -1,0 +1,77 @@
+@using PPSDotNetInternshipTraining.Blazor_HttpClient.Features.Shared.Models
+
+<style>
+    /* သင်ပေးထားသော မူလ CSS အတိုင်းပါပဲ */
+    .modern-pagination {
+        display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit;
+    }
+    .modern-pagination a, .modern-pagination span {
+        text-decoration: none; color: #4a5568; font-size: 15px; display: flex;
+        align-items: center; justify-content: center; height: 38px; min-width: 38px;
+        border-radius: 50%; transition: background-color 0.2s ease; cursor: pointer; /* Click နှိပ်လို့ရကြောင်းပြရန် */
+    }
+    .modern-pagination a.page-num:hover { background-color: #edf2f7; }
+    .modern-pagination a.active { background-color: #e3f2fd; color: #0d6efd; font-weight: 600; }
+    .modern-pagination a.page-nav { border-radius: 20px; padding: 0 16px; gap: 8px; }
+    .modern-pagination a.page-nav:hover:not(.disabled) { background-color: #edf2f7; }
+    .modern-pagination a.disabled { color: #a0aec0; pointer-events: none; cursor: not-allowed; }
+    .modern-pagination .dots { pointer-events: none; color: #718096; }
+</style>
+
+@if (Pager != null && Pager.TotalPages > 0)
+{
+    <div class="modern-pagination mt-5 mb-4">
+
+        @* Previous Button *@
+        <a class="page-nav @(Pager.CurrentPage == 1 ? "disabled" : "")"
+           @onclick="() => OnPageClick(Pager.CurrentPage - 1)">
+            <span>&larr;</span> Previous
+        </a>
+
+        @{
+            int current = Pager.CurrentPage;
+            int total = Pager.TotalPages;
+        }
+
+        @* Page Numbers *@
+        @for (int i = 1; i <= total; i++)
+        {
+            int pageNum = i; // Blazor Loop အတွက် Variable ဖမ်းထားခြင်း
+            if (pageNum == 1 || pageNum == total || (pageNum >= current - 1 && pageNum <= current + 1))
+            {
+                <a class="page-num @(pageNum == current ? "active" : "")"
+                   @onclick="() => OnPageClick(pageNum)">
+                    @pageNum
+                </a>
+            }
+            else if (pageNum == current - 2 || pageNum == current + 2)
+            {
+                <span class="dots">...</span>
+            }
+        }
+
+        @* Next Button *@
+        <a class="page-nav @(Pager.CurrentPage == Pager.TotalPages ? "disabled" : "")"
+           @onclick="() => OnPageClick(Pager.CurrentPage + 1)">
+            Next <span>&rarr;</span>
+        </a>
+    </div>
+}
+
+@code {
+    // MVC က @model နေရာမှာ Blazor က [Parameter] ကို သုံးပါတယ်
+    [Parameter]
+    public PagerModel Pager { get; set; } = default!;
+
+    // Page ပြောင်းသွားကြောင်း Parent Page ကို အသိပေးမယ့် Event
+    [Parameter]
+    public EventCallback<int> OnPageChanged { get; set; }
+
+    private async Task OnPageClick(int newPage)
+    {
+        if (newPage >= 1 && newPage <= Pager.TotalPages && newPage != Pager.CurrentPage)
+        {
+            await OnPageChanged.InvokeAsync(newPage);
+        }
+    }
+}
